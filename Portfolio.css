@@ -1,0 +1,309 @@
+/* General Portfolio Page Styling */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.portfolio-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: linear-gradient(90deg, #020c5a, #0008fa);
+  color: #020590;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Sidebar (Left Side) */
+.left-side {
+  width: 300px;
+  height: 600px;
+  max-height: 81.5vh; /* Ensure the height doesn't exceed the viewport */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Hide horizontal scrolling if any */
+  background-color: #f5f5f5; /* Optional: Background for the sidebar */
+  padding: 20px;
+  border-right: 1px solid #ccc; /* Optional: Divider */
+}
+
+/* Customize Scrollbar */
+.left-side::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.left-side::-webkit-scrollbar-thumb {
+  background: #888; /* Scrollbar thumb color */
+  border-radius: 4px; /* Rounded edges for the scrollbar */
+}
+
+.left-side::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker color on hover */
+}
+
+.left-side::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Scrollbar track color */
+}
+
+
+.portfolio-content{
+  display: flex;
+}
+.portfolio-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.portfolio-header h1 {
+  color: #020c5a;
+  font-size: larger;
+  font-weight: bolder;
+  margin: 0;
+}
+
+.portfolio-header button{
+  color: #020c5a;
+  padding: 10px;
+  border: transparent;
+  background: transparent;
+  font-weight: bolder;
+  font-size: large;
+  cursor: pointer;
+  
+}
+
+.portfolio-header button:hover{
+  border-radius: 50%;
+  color: white;
+  background: linear-gradient(90deg, #020c5a, #0008fa);
+}
+
+
+.portfolio-item {
+  border: 1px solid white;
+  padding: 10px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ 
+}
+.portfolio-item .port-details{
+  width: 300px;
+  height: 150px;
+  display: flex;
+  padding: 10px;
+  background:white;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 0 10px #020c5a;
+  /* max-width: 70%; */
+  cursor: pointer;
+}
+
+.portfolio-item .port-details:hover{
+  background: whitesmoke;
+}
+
+
+.portfolio-details .port-name{
+  font-size: larger;
+}
+
+.portfolio-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+ position: relative;
+}
+
+.portfolio-actions button{
+  background: transparent;
+  border: none;
+  font-size: medium;
+  color: #020c5a;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.portfolio-actions button:hover{
+  color: white;
+  border-radius: 50px ;
+  /* padding: 10px; */
+  background: linear-gradient(90deg, #020c5a, #0008fa);
+  box-shadow: 0 0 10px #020c5a;
+}
+
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: white;
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.modal-actions button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Right Side - Current Balance and Assets */
+.right-side {
+  width: 70%;
+}
+
+.card {
+  /* background-color: #020590; */
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  
+}
+
+.current-balance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.current-balance-header .button{
+  background: white;
+  color: #020c5a;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+}
+
+.current-balance-header .button:hover{
+  box-shadow: 0 0 10px #020c5a;
+  background: linear-gradient(90deg, #020c5a, #0008fa);
+  color: white;
+}
+
+.pro-loss{
+  color: white;
+  font-size: medium;
+}
+
+.assets-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ebebef;
+  color: black;
+  box-shadow: 0 0 10px #020c5a;
+  
+}
+
+.card-asset{
+  color: white;
+  padding: 10px;
+  /* margin-left: 150px; */
+  /* margin-top: 50px; */
+}
+
+.assets-table th,
+.assets-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #020590;
+  
+}
+
+.assets-table th {
+  background-color: #020590;
+  color: rgb(248, 247, 252);
+}
+
+.asset-logo {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.asset-name {
+  display: flex;
+  align-items: center;
+}
+
+.assets-table button{
+  background: linear-gradient(90deg, #020c5a, #0008fa);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+}
+
+.assets-table button:hover{
+  color:#020c5a;
+  background: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  box-shadow: 0 0 10px #020c5a;
+  border: none;
+
+}
+
+.stocks ul li{
+  list-style: none;
+  /* display: flex; */
+}
+
+.stocks ul li button{
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: #020c5a;
+  border-radius: 20px;
+}
+
+.stocks ul li button:hover{
+  background: linear-gradient(90deg, #020c5a, #0008fa);
+  color: white;
+  padding: 10px 20px;
+  box-shadow: 0 0 10px #020c5a;
+  border: none;
+
+}
