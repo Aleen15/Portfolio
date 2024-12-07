@@ -21,10 +21,13 @@ const Portfolio = () => {
   const [showBuyStockModal, setShowBuyStockModal] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
 
+  const [showSellStockModal, setShowSellStockModal] = useState(false);
+  const [stockToSell, setStockToSell] = useState({ id: null, name: "", quantity: 0 });
+
   const [assets, setAssets] = useState([
     {
       id: 1,
-      name: 'BNB',
+      name: 'Bitcoin',
       price: 45897.00,
       percentChange: -1.34,
       holdings: 872043.00,
@@ -87,31 +90,68 @@ const Portfolio = () => {
 
   const handleConfirmStock = (portfolioIndex) => {
     if (selectedCurrency && portfolioIndex !== null) {
-      const updatedPortfolios = [...portfolios]; // Make a copy of portfolios
-      const selectedPortfolio = updatedPortfolios[portfolioIndex]; // Get the selected portfolio
+      const updatedPortfolios = [...portfolios];
+      const selectedPortfolio = updatedPortfolios[portfolioIndex];
   
-      // Create a new asset object
+      const quantity = selectedCurrency.holdings; // Quantity entered by user
+      const totalCost = selectedCurrency.price * quantity;
+  
+      // Create a new asset
       const newAsset = {
-        id: selectedPortfolio.assets.length + 1, // Or another unique ID generation method
+        id: selectedPortfolio.assets.length + 1,
         name: selectedCurrency.name,
         price: selectedCurrency.price,
         percentChange: selectedCurrency.percentChange,
-        holdings: selectedCurrency.holdings,
-        avgBuyPrice: selectedCurrency.avgBuyPrice,
-        profitLoss: selectedCurrency.profitLoss,
+        holdings: quantity,
+        avgBuyPrice: selectedCurrency.price,
+        profitLoss: 0, // Default to 0, calculate later based on real-time price
       };
   
       // Add the new asset to the selected portfolio's assets array
       selectedPortfolio.assets.push(newAsset);
   
-      // Update the portfolios state with the new asset added to the selected portfolio
+      // Update the portfolios state
       setPortfolios(updatedPortfolios);
   
-      // Close the modal and reset selected stock
+      // Reset modal and selected stock
       setShowBuyStockModal(false);
       setSelectedCurrency(null);
     }
   };
+
+  const handleSellStock = (asset) => {
+    setStockToSell({ ...asset, quantity: 0 }); // Prepopulate the modal with the asset details
+    setShowSellStockModal(true);
+  };
+
+  const handleConfirmSell = () => {
+    const { id, quantity } = stockToSell;
+    if (quantity > 0 && activePortfolioIndex !== null) {
+      const updatedPortfolios = [...portfolios];
+      const selectedPortfolio = updatedPortfolios[activePortfolioIndex];
+
+      // Find the asset and update its holdings
+      const assetIndex = selectedPortfolio.assets.findIndex((asset) => asset.id === id);
+      if (assetIndex !== -1) {
+        const asset = selectedPortfolio.assets[assetIndex];
+        asset.holdings -= quantity; // Deduct the sold quantity
+
+        // Remove the asset if holdings become zero
+        if (asset.holdings <= 0) {
+          selectedPortfolio.assets.splice(assetIndex, 1);
+        }
+      }
+
+      setPortfolios(updatedPortfolios);
+      setShowSellStockModal(false);
+    }
+  };
+
+  const handleCancelSell = () => {
+    setShowSellStockModal(false);
+    setStockToSell({ id: null, name: "", quantity: 0 });
+  };
+  
   
   
 
@@ -195,7 +235,7 @@ const Portfolio = () => {
               <td>${asset.avgBuyPrice.toFixed(2)}</td>
               <td>${asset.profitLoss.toFixed(2)}</td>
               <td className="action">
-                <button>Sell</button>
+              <button onClick={() => handleSellStock(asset)}>Sell</button>
               </td>
             </tr>
           ))}
@@ -206,6 +246,34 @@ const Portfolio = () => {
 
 
       </div>
+
+            {/* Sell Stock Modal */}
+            {showSellStockModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Sell Stock</h2>
+            <div>
+              <p><strong>Stock Name:</strong> {stockToSell.name}</p>
+              <p><strong>Stock ID:</strong> {stockToSell.id}</p>
+            </div>
+            <div>
+              <label htmlFor="quantity">Quantity to Sell:</label>
+              <input
+                type="number"
+                id="quantity"
+                min="1"
+                max={stockToSell.holdings}
+                value={stockToSell.quantity}
+                onChange={(e) => setStockToSell({ ...stockToSell, quantity: parseFloat(e.target.value) })}
+              />
+            </div>
+            <div className="modal-actions">
+              <button onClick={handleConfirmSell}>Sell</button>
+              <button onClick={handleCancelSell}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal for Adding Portfolio */}
       {showModal && (
@@ -238,27 +306,67 @@ const Portfolio = () => {
 {showBuyStockModal && (
   <div className="modal-overlay">
     <div className="modal-content">
-      <h2>Select Digital Currency</h2>
+      <h2>Buy Digital Currency</h2>
+      
+      {/* Dropdown to select stock */}
       <div className="stocks">
-        <ul>
-          <li onClick={() => handleSelectCurrency({ name: 'Bitcoin', price: 45000, percentChange: 2.5, holdings: 10000, avgBuyPrice: 42000, profitLoss: 5000 })}>
-            <button>Bitcoin</button>
-          </li>
-          <li onClick={() => handleSelectCurrency({ name: 'Ethereum', price: 3000, percentChange: 1.2, holdings: 5000, avgBuyPrice: 2800, profitLoss: 4000 })}>
-            <button>Ethereum</button>
-          </li>
-          <li onClick={() => handleSelectCurrency({ name: 'BNB', price: 450, percentChange: -1.5, holdings: 3000, avgBuyPrice: 440, profitLoss: 300 })}>
-            <button>BNB</button>
-          </li>
-          <li onClick={() => handleSelectCurrency({ name: 'Solana', price: 150, percentChange: 0.8, holdings: 1500, avgBuyPrice: 140, profitLoss: 100 })}>
-            <button>Solana</button>
-          </li>
-        </ul>
-        <p>Selected Currency: {selectedCurrency ? selectedCurrency.name : 'None'}</p>
-        <div className="modal-actions">
-          <button onClick={() => handleConfirmStock(activePortfolioIndex)}>Select</button>
-          <button onClick={handleCancelBuyStock}>Cancel</button>
-        </div>
+        <label htmlFor="currency-select">Select Currency:</label>
+        <select
+          id="currency-select"
+          value={selectedCurrency ? selectedCurrency.name : ''}
+          onChange={(e) => {
+            const selected = e.target.value;
+            const currencyOptions = [
+              { name: 'Bitcoin', price: 45000, percentChange: 2.5, holdings: 0, avgBuyPrice: 0, profitLoss: 0 },
+              { name: 'Ethereum', price: 3000, percentChange: 1.2, holdings: 0, avgBuyPrice: 0, profitLoss: 0 },
+              { name: 'BNB', price: 450, percentChange: -1.5, holdings: 0, avgBuyPrice: 0, profitLoss: 0 },
+              { name: 'Solana', price: 150, percentChange: 0.8, holdings: 0, avgBuyPrice: 0, profitLoss: 0 },
+            ];
+            const selectedCurrency = currencyOptions.find((currency) => currency.name === selected);
+            setSelectedCurrency(selectedCurrency);
+          }}
+        >
+          <option value="" disabled>Select a currency</option>
+          <option value="Bitcoin">bitcoin</option>
+          <option value="Ethereum">ethereum</option>
+          <option value="BNB">bnb</option>
+          <option value="Solana">solana</option>
+        </select>
+      </div>
+
+      {/* Input for quantity */}
+      <div className="quantity-input">
+        <label htmlFor="quantity">Enter Quantity:</label>
+        <input
+          type="number"
+          id="quantity"
+          min="1"
+          placeholder="0"
+          onChange={(e) => {
+            const quantity = parseFloat(e.target.value);
+            setSelectedCurrency((prev) =>
+              prev ? { ...prev, holdings: quantity } : null
+            );
+          }}
+        />
+      </div>
+
+      {/* Selected Currency Info */}
+      <div className="selected-info">
+        <p><strong>Selected Currency:</strong> {selectedCurrency ? selectedCurrency.name : 'None'}</p>
+        <p><strong>Price per Unit:</strong> ${selectedCurrency ? selectedCurrency.price.toFixed(2) : '0.00'}</p>
+        <p><strong>Total Cost:</strong> ${selectedCurrency && selectedCurrency.holdings ? (selectedCurrency.price * selectedCurrency.holdings).toFixed(2) : '0.00'}</p>
+      </div>
+
+      {/* Modal Actions */}
+      <div className="modal-actions">
+        <button
+          onClick={() => handleConfirmStock(activePortfolioIndex)}
+          disabled={!selectedCurrency || !selectedCurrency.holdings}
+        >
+          Buy Stock
+        </button>
+        <button onClick={handleCancelBuyStock}>Cancel</button>
       </div>
     </div>
   </div>
