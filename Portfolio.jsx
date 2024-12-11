@@ -166,18 +166,18 @@ const Portfolio = () => {
             <button className="fas fa-plus" onClick={handleAddPortfolio}></button>
           </div>
           {portfolios.map((portfolio, index) => (
-  <div key={index} className="portfolio-item">
-    <button className="port-details">
-      <div className="portfolio-details">
-        <strong className="port-name">{portfolio.name}</strong>
-        <p className="port-descrip">{portfolio.description}</p>
-      </div>
+         <div key={index} className="portfolio-item">
+          <button className="port-details">
+           <div className="portfolio-details">
+          <strong className="port-name">{portfolio.name}</strong>
+          <p className="port-descrip">{portfolio.description}</p>
+        </div>
       <div className="portfolio-actions">
         <button className="fas fa-edit" onClick={() => handleEditPortfolio(index)}></button>
 
         <button className="fas fa-trash" onClick={() => handleDeletePortfolio(index)}></button>
       </div>
-    </button>
+     </button>
 
             </div>
           ))}
@@ -185,25 +185,25 @@ const Portfolio = () => {
 
         {/* Right Side - Current Balance and Assets */}
         <div className="right-side">
-  <div className="card">
-    <div className="current-balance-header">
+     <div className="card">
+      <div className="current-balance-header">
       <h2>Current Balance</h2>
       {/* Ensure activePortfolioIndex is set correctly */}
       {portfolios.length > 0 && activePortfolioIndex !== null && (
-  <button className="button" onClick={() => handleBuyStock(activePortfolioIndex)}>
-    Buy Stock
-  </button>
-)}
+      <button className="button" onClick={() => handleBuyStock(activePortfolioIndex)}>
+      Buy Stock
+       </button>
+     )}
 
 
-    </div>
-    <div className="pro-loss">
+      </div>
+      <div className="pro-loss">
       <p className="balance">$872,043.00</p>
       <p>Profit/Loss: $52,384.00</p>
-    </div>
-  </div>
+       </div>
+     </div>
 
-  <div className="card-asset">
+     <div className="card-asset">
     <h2>Your Assets</h2>
     <table className="assets-table">
       <thead>
@@ -241,8 +241,8 @@ const Portfolio = () => {
           ))}
       </tbody>
     </table>
-  </div>
-</div>
+    </div>
+   </div>
 
 
       </div>
