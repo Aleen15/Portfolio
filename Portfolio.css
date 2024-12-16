@@ -1,264 +1,176 @@
-/* General Portfolio Page Styling */
-body, html {
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  height: 100%;
+  background-color: var(--background-color, #f9f9f9);
+  color: var(--text-color, #333);
+  line-height: 1.6;
 }
 
-.portfolio-content {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  background: linear-gradient(90deg, #020c5a, #0008fa);
-  color: #020590;
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-
-/* Sidebar (Left Side) */
-.left-side {
-  width: 300px;
-  height: 600px;
-  max-height: 81.5vh; /* Ensure the height doesn't exceed the viewport */
-  overflow-y: auto; /* Enable vertical scrolling */
-  overflow-x: hidden; /* Hide horizontal scrolling if any */
-  background-color: #f5f5f5; /* Optional: Background for the sidebar */
-  padding: 20px;
-  border-right: 1px solid #ccc; /* Optional: Divider */
-}
-
-/* Customize Scrollbar */
-.left-side::-webkit-scrollbar {
-  width: 8px; /* Width of the scrollbar */
-}
-
-.left-side::-webkit-scrollbar-thumb {
-  background: #888; /* Scrollbar thumb color */
-  border-radius: 4px; /* Rounded edges for the scrollbar */
-}
-
-.left-side::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Darker color on hover */
-}
-
-.left-side::-webkit-scrollbar-track {
-  background: #f0f0f0; /* Scrollbar track color */
-}
-
-
-.portfolio-content{
-  display: flex;
-}
-.portfolio-header {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.portfolio-header h1 {
-  color: #020c5a;
-  font-size: larger;
-  font-weight: bolder;
-  margin: 0;
-}
-
-.portfolio-header button{
-  color: #020c5a;
-  padding: 10px;
-  border: transparent;
-  background: transparent;
-  font-weight: bolder;
-  font-size: large;
-  cursor: pointer;
-  
-}
-
-.portfolio-header button:hover{
-  border-radius: 50%;
-  color: white;
-  background: linear-gradient(90deg, #020c5a, #0008fa);
-}
-
-
-.portfolio-item {
-  border: 1px solid white;
-  padding: 10px;
-  margin-top: 10px;
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
- 
+  background-color: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
-.portfolio-item .port-details{
-  width: 300px;
-  height: 150px;
+
+.logo h1 {
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+.navigation a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.navigation a:hover {
+  color: var(--primary-color, #007bff);
+  text-decoration: underline;
+}
+
+.profile {
+  font-size: 16px;
+    font-weight: bold;
+  color: #333;
   display: flex;
-  padding: 10px;
-  background:white;
-  border: none;
-  border-radius: 20px;
-  box-shadow: 0 0 10px #020c5a;
-  /* max-width: 70%; */
-  cursor: pointer;
+  align-items: center;
+  gap: 10px;
 }
 
-.portfolio-item .port-details:hover{
-  background: whitesmoke;
+#profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 
-.portfolio-details .port-name{
-  font-size: larger;
-}
-
-.portfolio-actions {
+.main-content {
   display: flex;
   gap: 20px;
-  justify-content: space-around;
- position: relative;
+  padding: 20px;
 }
 
-.portfolio-actions button{
-  background: transparent;
+.portfolio {
+  flex: 1;
+}
+
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.add-portfolio {
+  font-size: 18px;
+  color: #fff;
+  background-color: var(--primary-color, #007bff);
   border: none;
-  font-size: medium;
-  color: #020c5a;
-  cursor: pointer;
-  padding: 10px;
-}
-
-.portfolio-actions button:hover{
-  color: white;
-  border-radius: 50px ;
-  /* padding: 10px; */
-  background: linear-gradient(90deg, #020c5a, #0008fa);
-  box-shadow: 0 0 10px #020c5a;
-}
-
-
-.icon-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  color: white;
-}
-
-/* Modal Styling */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.modal-content input,
-.modal-content textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-.modal-actions button {
-  margin-right: 10px;
-  padding: 8px 12px;
-  background-color: #2196f3;
-  color: white;
-  border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Right Side - Current Balance and Assets */
-.right-side {
-  width: 70%;
+.add-portfolio:hover {
+  background-color: var(--primary-dark, #0056b3);
+  transform: scale(1.1);
 }
 
-.card {
-  /* background-color: #020590; */
+.portfolio-item {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.portfolio-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.portfolio-details {
+  flex: 3;
+  background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.current-balance-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
+.balance {
+  margin-bottom: 20px;
 }
 
-.current-balance-header .button{
-  background: white;
-  color: #020c5a;
-  padding: 10px 20px;
+.balance-amount {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.balance-profit {
+  color: green;
+  font-size: 16px;
+}
+
+.buy-stocks {
+  background-color: var(--primary-color, #007bff);
+  color: #fff;
   border: none;
-  border-radius: 40px;
+  padding: 10px 20px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.current-balance-header .button:hover{
-  box-shadow: 0 0 10px #020c5a;
-  background: linear-gradient(90deg, #020c5a, #0008fa);
-  color: white;
-}
-
-.pro-loss{
-  color: white;
-  font-size: medium;
+.buy-stocks:hover {
+  background-color: var(--primary-dark, #0056b3);
+  transform: scale(1.05);
 }
 
 .assets-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #ebebef;
-  color: black;
-  box-shadow: 0 0 10px #020c5a;
-  
-}
-
-.card-asset{
-  color: white;
-  padding: 10px;
-  /* margin-left: 150px; */
-  /* margin-top: 50px; */
-}
-
-.assets-table th,
-.assets-table td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #020590;
-  
+  margin-top: 20px;
 }
 
 .assets-table th {
-  background-color: #020590;
-  color: rgb(248, 247, 252);
+  background-color: #f1f1f1;
+  text-align: left;
+  padding: 10px;
 }
 
-.asset-logo {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-  vertical-align: middle;
+.assets-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.assets-table tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.positive {
+  color: green;
+  font-weight: bold;
+}
+
+.negative {
+  color: red;
+  font-weight: bold;
 }
 
 .asset-name {
@@ -266,44 +178,192 @@ body, html {
   align-items: center;
 }
 
-.assets-table button{
-  background: linear-gradient(90deg, #020c5a, #0008fa);
-  color: white;
-  padding: 10px 20px;
+.asset-name img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.action-btn {
+  background-color: transparent;
   border: none;
-  border-radius: 40px;
+  font-size: 18px;
   cursor: pointer;
 }
 
-.assets-table button:hover{
-  color:#020c5a;
-  background: white;
-  border-radius: 20px;
-  padding: 10px 20px;
-  box-shadow: 0 0 10px #020c5a;
-  border: none;
+/* General Button Styles */
 
+.btn:hover {
+  background-color: var(--primary-dark, #0056b3);
+  transform: scale(1.05);
 }
 
-.stocks ul li{
-  list-style: none;
-  /* display: flex; */
-}
-
-.stocks ul li button{
-  background: transparent;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  color: #020c5a;
-  border-radius: 20px;
-}
-
-.stocks ul li button:hover{
-  background: linear-gradient(90deg, #020c5a, #0008fa);
+/* Logout Button */
+.logout-btn {
+  background-color: #dc3545;
   color: white;
-  padding: 10px 20px;
-  box-shadow: 0 0 10px #020c5a;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 14px;
   border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
+.logout-btn:hover {
+  background-color: #b02a37;
+  transform: scale(1.05);
+}
+
+.logout-btn:active {
+  background-color: #8b1e29;
+  transform: scale(0.95);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.portfolio-item,
+.portfolio-details {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .portfolio,
+  .portfolio-details {
+    width: 100%;
+    margin: 0;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .navigation {
+    margin-top: 10px;
+  }
+}
+
+/* Style for View Stocks button */
+button.view-stocks {
+    background-color: #007BFF; /* Blue color */
+    color: white; /* White text */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button.view-stocks:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Style for Sell button */
+button.sell-stock {
+    background-color: #007BFF; /* Blue color */
+    color: white; /* White text */
+    border: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button.sell-stock:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Style for portfolio cards */
+.portfolio-card {
+    background-color: #f9f9f9; /* Light background for cards */
+    border: 1px solid #ccc; /* Border for separation */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px;
+    margin-bottom: 20px; /* Space between portfolio cards */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.portfolio-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* More prominent shadow */
+}
+
+/* Portfolio Name */
+.portfolio-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333; /* Dark text color */
+    margin-bottom: 10px; /* Space between name and other details */
+}
+
+/* Investment Agenda */
+.investment-agenda {
+    font-size: 16px;
+    color: #555; /* Medium gray text for the agenda */
+    margin-bottom: 10px;
+}
+
+/* Portfolio ID */
+.portfolio-id {
+    font-size: 14px;
+    color: #888; /* Lighter gray for the ID */
+    margin-bottom: 20px;
+}
+
+/* Button Style for View Stocks */
+button.view-stocks {
+    background-color: #007BFF; /* Blue color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button.view-stocks:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.card-actions {
+    position: absolute;
+    top: 10px; /* Adjust spacing from the top */
+    right: 10px; /* Adjust spacing from the right */
+    z-index: 10; /* Ensure it's on top */
+    display: flex;
+    gap: 5px; /* Space between buttons */
+}
+
+.edit-portfolio,
+.delete-portfolio {
+    background: none; /* Transparent background */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 16px; /* Adjust icon size */
+}
+
+.edit-portfolio:hover,
+.delete-portfolio:hover {
+    color: #007BFF; /* Highlight color on hover */
 }
