@@ -1,80 +1,75 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Assuming you are using React Router
 import './CreatePortfolio.css';
 
-const CreatePortfolio = ({ userId }) => {
+const CreatePortfolio = ({ userId, onPortfolioCreated }) => {
     const [portfolioName, setPortfolioName] = useState('');
     const [investmentAgenda, setInvestmentAgenda] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        const formData = {
-            portfolioName,
-            investmentAgenda,
-        };
+    const handleSave = async () => {
+        if (!portfolioName || !investmentAgenda) {
+            setErrorMessage('Please fill out both fields.');
+            return;
+        }
 
         try {
-            const response = await fetch(`/portfolios/${userId}`, {
+            const response = await fetch(`/portfolios/${userId}/create`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    portfolioName,
+                    investmentAgenda,
+                }),
             });
 
             if (response.ok) {
-                setSuccessMessage('Portfolio created successfully!');
-                setErrorMessage('');
-                setPortfolioName('');
-                setInvestmentAgenda('');
-
-                // Redirect to portfolio page after 2 seconds
-                setTimeout(() => {
-                    navigate('/portfolio');
-                }, 2000);
+                alert('Portfolio created successfully!');
+                if (onPortfolioCreated) onPortfolioCreated();
+                window.location.href = '/portfolio'; // Redirect to My Portfolios
             } else {
-                const errorData = await response.json();
-                setErrorMessage(errorData.message || 'An error occurred.');
-                setSuccessMessage('');
+                setErrorMessage('Failed to create portfolio. Please try again.');
             }
         } catch (error) {
-            setErrorMessage('An unexpected error occurred. Please try again.');
-            setSuccessMessage('');
+            console.error('Error creating portfolio:', error);
+            setErrorMessage('An error occurred. Please try again.');
         }
     };
 
+    const handleCancel = () => {
+        window.location.href = '/portfolio'; // Redirect to My Portfolios
+    };
+
     return (
-        <div className="form-container">
+        <div className="create-portfolio-container">
             <h2>Create Portfolio</h2>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="portfolioName">Portfolio Name:</label>
+            <div className="form-group">
+                <label htmlFor="portfolioName">Portfolio Name</label>
                 <input
                     type="text"
                     id="portfolioName"
-                    name="portfolioName"
                     value={portfolioName}
                     onChange={(e) => setPortfolioName(e.target.value)}
-                    required
+                    placeholder="Enter portfolio name"
                 />
-
-                <label htmlFor="investmentAgenda">Investment Agenda:</label>
+            </div>
+            <div className="form-group">
+                <label htmlFor="investmentAgenda">Investment Agenda</label>
                 <textarea
                     id="investmentAgenda"
-                    name="investmentAgenda"
                     value={investmentAgenda}
                     onChange={(e) => setInvestmentAgenda(e.target.value)}
-                    required
+                    placeholder="Enter a brief description of your investment strategy"
                 />
-
-                <button type="submit">Submit</button>
-            </form>
-
-            {successMessage && <div className="success-message">{successMessage}</div>}
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            </div>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <div className="button-group">
+                <button className="btn save-btn" onClick={handleSave}>
+                    Save
+                </button>
+                <button className="btn cancel-btn" onClick={handleCancel}>
+                    Cancel
+                </button>
+            </div>
         </div>
     );
 };
