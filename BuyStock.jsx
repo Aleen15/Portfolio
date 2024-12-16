@@ -1,158 +1,94 @@
 import React, { useState, useEffect } from 'react';
 import './BuyStock.css';
 
-const CryptoPage = () => {
-    const [portfolioId, setPortfolioId] = useState('');
-    const [stocks, setStocks] = useState([]);
-    const [selectedStocks, setSelectedStocks] = useState([]);
+const BuyStock = ({ portfolioId, onAddToPortfolio }) => {
+    const [cryptoCoins, setCryptoCoins] = useState([]);
 
     useEffect(() => {
-        // Fetch initial stock data (replace with actual API endpoint)
-        fetch('/api/stocks')
-            .then((response) => response.json())
-            .then((data) => setStocks(data))
-            .catch((error) => console.error('Error fetching stocks:', error));
+        fetchCryptoCoins();
     }, []);
 
-    const handleRowSelection = (stock, holdings, isSelected) => {
-        if (!holdings || holdings <= 0) {
-            alert('Please enter a valid holdings value before selecting.');
-            return;
-        }
-
-        if (isSelected) {
-            setSelectedStocks((prev) =>
-                prev.filter((item) => item.stockId !== stock.id)
-            );
-        } else {
-            setSelectedStocks((prev) => [
-                ...prev,
-                { ...stock, holdings: parseFloat(holdings) },
-            ]);
+    const fetchCryptoCoins = async () => {
+        try {
+            const response = await fetch('/cryptocoins'); // Replace with the actual API endpoint
+            if (!response.ok) throw new Error('Failed to fetch cryptocurrency data');
+            const data = await response.json();
+            setCryptoCoins(data);
+        } catch (error) {
+            console.error('Error fetching cryptocurrency data:', error);
         }
     };
 
-    const handleSubmit = () => {
-        if (!portfolioId) {
-            alert('Please enter a Portfolio ID.');
-            return;
-        }
-
-        if (selectedStocks.length === 0) {
-            alert('No stocks selected.');
-            return;
-        }
-
-        fetch(`/stock/bulk-insert/${portfolioId}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(selectedStocks),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    alert('Stocks purchased successfully!');
-                    setSelectedStocks([]);
-                    setPortfolioId('');
-                } else {
-                    alert('Failed to buy stocks.');
-                }
-            })
-            .catch((error) => {
-                console.error('Error purchasing stocks:', error);
+    const handleAddToPortfolio = async (coin) => {
+        try {
+            const response = await fetch(`/portfolios/${portfolioId}/add`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    coinId: coin.id,
+                    coinName: coin.name,
+                    price: coin.price,
+                }),
             });
+            if (response.ok) {
+                alert(`${coin.name} has been added to your portfolio!`);
+                if (onAddToPortfolio) onAddToPortfolio();
+            } else {
+                alert('Failed to add coin to portfolio.');
+            }
+        } catch (error) {
+            console.error('Error adding coin to portfolio:', error);
+        }
     };
 
     return (
-        <div className="container">
-            <h1>CRYPTO-CURRENCIES</h1>
-            <div className="form-group">
-                <label htmlFor="portfolioId">Enter Portfolio ID:</label>
-                <input
-                    type="number"
-                    id="portfolioId"
-                    placeholder="Enter Portfolio ID"
-                    value={portfolioId}
-                    onChange={(e) => setPortfolioId(e.target.value)}
-                />
-            </div>
-
-            <table>
+        <div className="buy-crypto-container">
+            <h2>Select Cryptocurrency</h2>
+            <table className="crypto-table">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Stock Name</th>
-                        <th>Current Price</th>
-                        <th>Avg. Buy Price</th>
-                        <th>Percentage Change (24h)</th>
-                        <th>Holdings</th>
-                        <th>Select</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>24h%</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {stocks.map((stock, index) => {
-                        const isSelected = selectedStocks.some(
-                            (item) => item.stockId === stock.id
-                        );
-
-                        return (
-                            <StockRow
-                                key={stock.id}
-                                stock={stock}
-                                index={index + 1}
-                                isSelected={isSelected}
-                                onRowSelection={handleRowSelection}
-                            />
-                        );
-                    })}
+                    {cryptoCoins.length > 0 ? (
+                        cryptoCoins.map((coin, index) => (
+                            <tr key={coin.id}>
+                                <td>{index + 1}</td>
+                                <td>{coin.name}</td>
+                                <td>₹{coin.price}</td>
+                                <td className={coin.percentChange24h >= 0 ? 'positive' : 'negative'}>
+                                    {coin.percentChange24h}%
+                                </td>
+                                <td>
+                                    <button
+                                        className="select-coin"
+                                        onClick={() => handleAddToPortfolio(coin)}
+                                    >
+                                        Select
+                                    </button>
+                                    <button
+                                        className="cancel-coin"
+                                        onClick={() => window.location.href = '/portfolio'}
+                                    >
+                                        Cancel
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="5">No cryptocurrencies found</td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
-
-            <div className="form-group">
-                <button
-                    className="submit-btn"
-                    type="button"
-                    onClick={handleSubmit}
-                >
-                    Buy Selected Stocks
-                </button>
-            </div>
         </div>
     );
 };
 
-const StockRow = ({ stock, index, isSelected, onRowSelection }) => {
-    const [holdings, setHoldings] = useState(stock.holdings || '');
-
-    const handleSelect = () => {
-        onRowSelection(stock, holdings, isSelected);
-    };
-
-    return (
-        <tr className={isSelected ? 'highlight' : ''}>
-            <td>{index}</td>
-            <td>{stock.stockName}</td>
-            <td>${stock.currentPrice.toFixed(2)}</td>
-            <td>${stock.avgBuyPrice.toFixed(2)}</td>
-            <td className={stock.percentChange24h >= 0 ? 'positive' : 'negative'}>
-                {stock.percentChange24h >= 0 ? '+' : ''}
-                {stock.percentChange24h.toFixed(2)}%
-            </td>
-            <td>
-                <input
-                    type="number"
-                    value={holdings}
-                    min="0"
-                    onChange={(e) => setHoldings(e.target.value)}
-                />
-            </td>
-            <td>
-                <div
-                    className={`select-circle ${isSelected ? 'selected' : ''}`}
-                    onClick={handleSelect}
-                ></div>
-            </td>
-        </tr>
-    );
-};
-
-export default CryptoPage;
+export default BuyStock;
