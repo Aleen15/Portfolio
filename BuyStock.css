@@ -1,87 +1,64 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 0;
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-    margin-top: 30px;
-}
-
-.container {
-    width: 80%;
-    margin: 0 auto;
+.buy-crypto-container {
     padding: 20px;
+    background: #f7f9fc;
+    font-family: Arial, sans-serif;
 }
 
-.form-group {
+.buy-crypto-container h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.form-group input {
-    padding: 8px;
-    width: 200px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-
-table {
+.crypto-table {
     width: 100%;
-    margin-top: 30px;
     border-collapse: collapse;
+    margin: 0 auto;
 }
 
-th,
-td {
+.crypto-table th,
+.crypto-table td {
+    padding: 10px;
     border: 1px solid #ddd;
-    padding: 12px;
     text-align: center;
 }
 
-th {
-    background-color: #f4f4f4;
+.crypto-table th {
+    background: #f0f0f0;
     font-weight: bold;
 }
 
-.select-circle {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: #ccc;
-    cursor: pointer;
-    border: 2px solid #ddd;
+.crypto-table .positive {
+    color: green;
 }
 
-.selected {
-    background-color: #28a745; /* Green for selected */
+.crypto-table .negative {
+    color: red;
 }
 
-.highlight {
-    background-color: #28a745 !important; /* Green for row */
+.select-coin {
+    background-color: #4caf50;
     color: white;
-}
-
-input[type='number'] {
-    width: 80px;
-    text-align: center;
-}
-
-.submit-btn {
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.submit-btn:hover {
-    background-color: #0056b3;
+.select-coin:hover {
+    background-color: #45a049;
+}
+
+.cancel-coin {
+    background-color: #f44336;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-coin:hover {
+    background-color: #d32f2f;
 }
