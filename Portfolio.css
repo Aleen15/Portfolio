@@ -13,44 +13,13 @@ body {
   justify-content: space-between;
   align-items: center;
   background-color: #fff;
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  /* position: sticky; */
   top: 0;
   z-index: 1000;
 }
 
-.logo h1 {
-  font-size: 18px;
-  color: var(--text-color);
-}
-
-.navigation a {
-  margin: 0 10px;
-  text-decoration: none;
-  color: var(--text-color);
-  transition: color 0.3s ease;
-}
-
-.navigation a:hover {
-  color: var(--primary-color, #007bff);
-  text-decoration: underline;
-}
-
-.profile {
-  font-size: 16px;
-    font-weight: bold;
-  color: #333;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#profile-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
 
 
 .main-content {
