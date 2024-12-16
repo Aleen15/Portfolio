@@ -1,77 +1,73 @@
 import React, { useState } from 'react';
-import './CreatePortfolio.css';
+import './CreatePortfolio.css'
+import { Navigate } from 'react-router-dom';
 
-const CreatePortfolio = ({ userId, onPortfolioCreated }) => {
-    const [portfolioName, setPortfolioName] = useState('');
-    const [investmentAgenda, setInvestmentAgenda] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+const CreatePortfolio = ({ userId }) => {
+  const [portfolioName, setPortfolioName] = useState('');
+  const [investmentAgenda, setInvestmentAgenda] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-    const handleSave = async () => {
-        if (!portfolioName || !investmentAgenda) {
-            setErrorMessage('Please fill out both fields.');
-            return;
-        }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Example validation
+    if (!portfolioName || !investmentAgenda) {
+      setErrorMessage('Please fill in all fields.');
+      return;
+    }
 
-        try {
-            const response = await fetch(`/portfolios/${userId}/create`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    portfolioName,
-                    investmentAgenda,
-                }),
-            });
+    // Reset error message on successful submission
+    setErrorMessage('');
 
-            if (response.ok) {
-                alert('Portfolio created successfully!');
-                if (onPortfolioCreated) onPortfolioCreated();
-                window.location.href = '/portfolio'; // Redirect to My Portfolios
-            } else {
-                setErrorMessage('Failed to create portfolio. Please try again.');
-            }
-        } catch (error) {
-            console.error('Error creating portfolio:', error);
-            setErrorMessage('An error occurred. Please try again.');
-        }
-    };
+    // Simulating a successful portfolio creation
+    setSuccessMessage('Portfolio created successfully!');
+    
+    // You can handle API call here for actual portfolio creation
+    // Example: axios.post('/api/create-portfolio', { userId, portfolioName, investmentAgenda })
+  };
 
-    const handleCancel = () => {
-        window.location.href = '/portfolio'; // Redirect to My Portfolios
-    };
+  return (
+    <div  >
+      <div className='create-portfolio-container'>
+        <h2>Create Portfolio</h2>
+        <form onSubmit={handleSubmit} className='form-group'>
+          {/* Hidden input for userId */}
+          <input type="hidden" value={userId} />
+          
+          <label htmlFor="portfolioName">Portfolio Name:</label>
+          <input
+            type="text"
+            id="portfolioName"
+            name="portfolioName"
+            value={portfolioName}
+            onChange={(e) => setPortfolioName(e.target.value)}
+            required
+          />
 
-    return (
-        <div className="create-portfolio-container">
-            <h2>Create Portfolio</h2>
-            <div className="form-group">
-                <label htmlFor="portfolioName">Portfolio Name</label>
-                <input
-                    type="text"
-                    id="portfolioName"
-                    value={portfolioName}
-                    onChange={(e) => setPortfolioName(e.target.value)}
-                    placeholder="Enter portfolio name"
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="investmentAgenda">Investment Agenda</label>
-                <textarea
-                    id="investmentAgenda"
-                    value={investmentAgenda}
-                    onChange={(e) => setInvestmentAgenda(e.target.value)}
-                    placeholder="Enter a brief description of your investment strategy"
-                />
-            </div>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            <div className="button-group">
-                <button className="btn save-btn" onClick={handleSave}>
-                    Save
-                </button>
-                <button className="btn cancel-btn" onClick={handleCancel}>
-                    Cancel
-                </button>
-            </div>
-        </div>
-    );
+          <label htmlFor="investmentAgenda">Investment Agenda:</label>
+          <textarea
+            id="investmentAgenda"
+            name="investmentAgenda"
+            value={investmentAgenda}
+            onChange={(e) => setInvestmentAgenda(e.target.value)}
+            required
+          />
+
+        <div className='button-group'>
+          <button type="btn save-btn" className='btn save-btn'>Save</button>
+          <button type="btn cancel-btn" className='btn cancel-btn'>Cancel</button>
+          </div>
+        </form>
+
+        {/* Display success or error message */}
+        {successMessage && <div >{successMessage}</div>}
+        {errorMessage && <div >{errorMessage}</div>}
+      </div>
+    </div>
+  );
 };
+
+
 
 export default CreatePortfolio;
